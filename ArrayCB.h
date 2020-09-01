@@ -6,14 +6,16 @@
 #define SCHULE_ARRAY_CB_H
 
 #include <vector>
+#include <cstdlib>
+#include <algorithm>
 
-class array_cb {
+class ArrayCB {
 
-    using f_void_t = void (*)(int*, int);
+    using f_void_t = std::function<void()>;
 
 public:
 
-    explicit array_cb(int* p = nullptr, int s = 0);
+    explicit ArrayCB(int* p = nullptr, int s = 0);
 
     int& operator[] (int);
 
@@ -37,8 +39,8 @@ private:
     std::vector<f_void_t> array_accessed_cb;
     std::vector<f_void_t> array_swapped_cb;
 
-    int access_count;
-    int swap_count;
+    int access_count = 0;
+    int swap_count = 0;
 
 };
 

@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 3.15)
-project(Schule)
+project(Sorting_Vis)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Schule main.cpp BubbleSort.h array_cb.cpp array_cb.h)
+
+find_package(Qt5Widgets REQUIRED)
+
+
+
+add_executable(Sorting_Vis main.cpp BubbleSort.h ArrayCB.cpp ArrayCB.h MainWindow.cpp MainWindow.h RenderArea.cpp RenderArea.h)
+
+target_link_libraries(Sorting_Vis Qt5::Widgets)

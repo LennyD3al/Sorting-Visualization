@@ -1,8 +1,7 @@
 #include <iostream>
 #include <cstdio>
 
-#include "BubbleSort.h"
-#include "array_cb.h"
+#include "MainWindow.h"
 
 void test(int* arr, int size) {
 
@@ -19,19 +18,25 @@ void printArr(int arr[], int size) {
     }
     std::cout << std::endl;
 }
-int main() {
-
-
+int main(int argc, char **argv) {
+/*
     int arr[] = { 64, 34, 25, 12, 22, 11, 90 };
     int n = sizeof(arr) / sizeof(arr[0]);
 
-    array_cb array(arr, n);
-    array.add_array_accessed_cb(test);
 
-    BubbleSort::sort(array, n);
+    ArrayCB array(arr, n);
+    auto lambda = [](void) {
+        printf("Test\n");
+    };
+    array.add_array_accessed_cb(lambda);
+    array[0] = 10;
+    */
+    QApplication app(argc, argv);
 
-    printf("%d\n", array.get_access_count());
-    printf("%d\n", array.get_swap_count());
+    MainWindow widget;
+    widget.show();
 
-    return 0;
+    return app.exec();
+
+
 }
