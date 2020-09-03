@@ -11,17 +11,6 @@ const int IdRole = Qt::UserRole;
 MainWindow::MainWindow() {
     renderArea = new RenderArea;
 
-    int arr[] = { 64, 34, 25, 12, 22, 11, 90 };
-    int n = sizeof(arr) / sizeof(arr[0]);
-
-
-    ArrayCB array(arr, n);
-    renderArea->setArray(&array);
-
-    BubbleSort::sort(array, n);
-
-    printf("Swap count: %d\n", array.get_swap_count());
-
     shapeComboBox = new QComboBox;
     shapeComboBox->addItem(tr("Polygon"), RenderArea::Polygon);
     shapeComboBox->addItem(tr("Rectangle"), RenderArea::Rect);
@@ -150,6 +139,19 @@ MainWindow::MainWindow() {
     antialiasingCheckBox->setChecked(true);
 
     setWindowTitle(tr("Basic Drawing"));
+
+
+
+    int arr[] = { 64, 34, 25, 12, 22, 11, 90 };
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    ArrayCB array(arr, n);
+    renderArea->setArray(&array);
+
+    // BubbleSort::sort(array, n);
+    array[0];
+
+    printf("Swap count: %d\n", array.get_swap_count());
 }
 
 void MainWindow::shapeChanged()
@@ -157,6 +159,7 @@ void MainWindow::shapeChanged()
     RenderArea::Shape shape = RenderArea::Shape(shapeComboBox->itemData(
             shapeComboBox->currentIndex(), IdRole).toInt());
     renderArea->setShape(shape);
+
 }
 
 void MainWindow::penChanged()
@@ -201,4 +204,3 @@ void MainWindow::brushChanged()
     }
 
 }
-

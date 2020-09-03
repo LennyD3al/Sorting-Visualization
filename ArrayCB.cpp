@@ -8,7 +8,7 @@
 int &ArrayCB::operator[](int index) {
     // TODO: Implement callback when array is accessed
 
-    if (index >= size) {
+    if (index >= m_size) {
         // std::cout << "Array index out of bound, exiting";
         throw;
     }
@@ -22,7 +22,7 @@ int &ArrayCB::operator[](int index) {
 }
 
 ArrayCB::ArrayCB(int * p, int s) {
-    size = s;
+    m_size = s;
     ptr = nullptr;
     if (s != 0) {
         ptr = new int[s];
@@ -32,7 +32,7 @@ ArrayCB::ArrayCB(int * p, int s) {
 }
 
 void ArrayCB::print() const {
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < m_size; i++) {
         // std::cout << ptr[i] << " ";
     }
 
@@ -67,5 +67,20 @@ void ArrayCB::swap(const int &index1, const int &index2) {
         cb();
     }
 
+}
+
+int ArrayCB::size() const {
+    return m_size;
+}
+
+int ArrayCB::largest_element() {
+    int largest_element = INT32_MIN;
+
+    for (int i = 0; i < m_size; i++) {
+        if (ptr[i] > largest_element)
+            largest_element = ptr[i];
+    }
+
+    return largest_element;
 }
 

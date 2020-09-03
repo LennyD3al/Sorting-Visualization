@@ -34,9 +34,10 @@ int main(int argc, char **argv) {
     QApplication app(argc, argv);
 
     MainWindow widget;
+
     widget.show();
 
+//  widget.array()[0] = 12;
+
     return app.exec();
-
-
 }

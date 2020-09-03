@@ -22,7 +22,7 @@ RenderArea::RenderArea(QWidget *parent)
 
 QSize RenderArea::sizeHint() const
 {
-    return QSize(400, 200);
+    return QSize(600, 400);
 }
 
 QSize RenderArea::minimumSizeHint() const
@@ -68,7 +68,7 @@ void RenderArea::paintEvent(QPaintEvent * /* event */) {
     if (antialiased)
         painter.setRenderHint(QPainter::Antialiasing, true);
 
-    painter.drawLines(lines);
+    painter.drawRects(rects);
 
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setPen(palette().dark().color());
@@ -76,35 +76,88 @@ void RenderArea::paintEvent(QPaintEvent * /* event */) {
     painter.drawRect(QRect(0, 0, width() - 1, height() - 1));
 }
 
-void RenderArea::addLine(const QLineF &line) {
-    lines.push_back(line);
+void RenderArea::addRect(const QRectF &rect) {
+    rects.push_back(rect);
     update();
 }
 
-void RenderArea::removeLine(const QLineF &line) {
-    lines.removeOne(line);
+void RenderArea::removeRect(const QRectF &rect) {
+    rects.removeOne(rect);
     update();
 }
 
-void RenderArea::removeAllLines() {
-    lines.clear();
+void RenderArea::removeAllRects() {
+    rects.clear();
     update();
 }
 
 void RenderArea::setArray(ArrayCB *arr) {
-    array = arr;
-    array->add_array_accessed_cb([this] { accessCB(); });
-    array->add_array_swapped_cb([this] { swapCB(); });
+    m_array = arr;
+    m_array->add_array_accessed_cb([this] { accessCB(); });
+    m_array->add_array_swapped_cb([this] { swapCB(); });
+    printf("SetArray\n");
+
 }
 
 void RenderArea::accessCB() {
     printf("Access CB\n");
+    updateLines();
     update();
 }
 
 void RenderArea::swapCB() {
     printf("Swap CB\n");
+    updateLines();
     update();
 }
+
+void RenderArea::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event);
+
+    int width = event->size().width();
+    int height = event->size().height();
+
+    // printf("Width: %d, Height: %d\n", width, height);
+}
+
+void RenderArea::showEvent(QShowEvent *event) {
+    QWidget::showEvent(event);
+
+    int width = this->width();
+    int height = this->height();
+
+    printf("Width: %d, Height: %d\n", width, height);
+
+}
+
+void RenderArea::updateLines() {
+
+    int arraySize = m_array->size();
+
+    if (!rects.isEmpty() && m_array != nullptr) {
+        // No Rects
+
+        // Calculate width
+        float recWidth = width() / arraySize;
+
+        for (int i = 0; i < arraySize; i++) {
+
+            float recHeight = scale((*m_array)[i], height(), m_array->largest_element());
+
+            float xPos = i * recWidth;
+
+            QRectF rect(xPos, 0, recWidth, recHeight);
+
+            addRect(rect);
+
+        }
+    }
+}
+
+float RenderArea::scale(const float &val, const float &out_max, const float &in_max) {
+    return val * out_max / in_max;
+}
+
+
 
 

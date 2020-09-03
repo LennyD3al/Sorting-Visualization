@@ -22,11 +22,8 @@ public:
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
 
-    void addLine(const QLineF &line);
-    void removeLine(const QLineF &line);
-    void removeAllLines();
-
     void setArray(ArrayCB *arr);
+
 
 public slots:
     void setShape(Shape shape);
@@ -37,6 +34,8 @@ public slots:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 
 private:
     Shape shape;
@@ -46,14 +45,21 @@ private:
     bool transformed;
     QPixmap pixmap;
 
-    QVector<QLineF> lines;
+    QVector<QRectF> rects;
 
-    ArrayCB *array;
+    ArrayCB *m_array;
 
 private:
-
     void accessCB();
     void swapCB();
+
+    void addRect(const QRectF &rect);
+    void removeRect(const QRectF &rect);
+    void removeAllRects();
+
+    static float scale(const float &val, const float &out_max, const float &in_max);
+
+    void updateLines();
 };
 
 #endif //SORTING_VIS_RENDERAREA_H

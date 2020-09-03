@@ -16,6 +16,8 @@ Q_OBJECT
 public:
     MainWindow();
 
+    ArrayCB& array();
+
 private slots:
     void shapeChanged();
     void penChanged();

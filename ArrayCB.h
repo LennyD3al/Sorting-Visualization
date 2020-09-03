@@ -8,6 +8,7 @@
 #include <vector>
 #include <cstdlib>
 #include <algorithm>
+#include <functional>
 
 class ArrayCB {
 
@@ -18,6 +19,8 @@ public:
     explicit ArrayCB(int* p = nullptr, int s = 0);
 
     int& operator[] (int);
+
+    int size() const;
 
     void add_array_accessed_cb(f_void_t cb);
     void add_array_swapped_cb(f_void_t cb);
@@ -30,17 +33,21 @@ public:
     int get_access_count() { return access_count; }
     int get_swap_count() { return swap_count; }
 
+    int largest_element();
+
     void print() const;
 
 private:
     int* ptr;
-    int size;
+    int m_size;
 
     std::vector<f_void_t> array_accessed_cb;
     std::vector<f_void_t> array_swapped_cb;
 
     int access_count = 0;
     int swap_count = 0;
+
+
 
 };
 
