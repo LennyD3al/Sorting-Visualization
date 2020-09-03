@@ -7,6 +7,9 @@
 
 
 #include <QtWidgets>
+#include <chrono>
+#include <thread>
+
 #include "ArrayCB.h"
 
 class RenderArea: public QWidget {
@@ -52,6 +55,8 @@ private:
 private:
     void accessCB();
     void swapCB();
+
+    static void sleep();
 
     void addRect(const QRectF &rect);
     void removeRect(const QRectF &rect);

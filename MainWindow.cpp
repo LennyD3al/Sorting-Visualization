@@ -145,13 +145,12 @@ MainWindow::MainWindow() {
     int arr[] = { 64, 34, 25, 12, 22, 11, 90 };
     int n = sizeof(arr) / sizeof(arr[0]);
 
-    ArrayCB array(arr, n);
-    renderArea->setArray(&array);
+    m_array = new ArrayCB(arr, n);
+    renderArea->setArray(m_array);
 
     // BubbleSort::sort(array, n);
-    array[0];
 
-    printf("Swap count: %d\n", array.get_swap_count());
+    printf("Swap count: %d\n", m_array->get_swap_count());
 }
 
 void MainWindow::shapeChanged()
@@ -203,4 +202,8 @@ void MainWindow::brushChanged()
         renderArea->setBrush(QBrush(Qt::green, style));
     }
 
+}
+
+ArrayCB &MainWindow::array() {
+    return *m_array;
 }

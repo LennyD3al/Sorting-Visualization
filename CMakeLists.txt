@@ -6,6 +6,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread")
 
 if (WIN32)
 set(CMAKE_PREFIX_PATH  "C:/Qt/5.15.0/mingw81_64/lib/cmake")

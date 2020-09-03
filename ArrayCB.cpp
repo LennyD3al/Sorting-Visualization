@@ -6,7 +6,6 @@
 #include "ArrayCB.h"
 
 int &ArrayCB::operator[](int index) {
-    // TODO: Implement callback when array is accessed
 
     if (index >= m_size) {
         // std::cout << "Array index out of bound, exiting";
@@ -18,6 +17,7 @@ int &ArrayCB::operator[](int index) {
         cb();
     }
 
+    m_array_changed = false;
     return ptr[index];
 }
 
@@ -74,6 +74,9 @@ int ArrayCB::size() const {
 }
 
 int ArrayCB::largest_element() {
+
+    if (m_array_changed) return last_largest_element;
+
     int largest_element = INT32_MIN;
 
     for (int i = 0; i < m_size; i++) {
@@ -81,6 +84,19 @@ int ArrayCB::largest_element() {
             largest_element = ptr[i];
     }
 
+    last_largest_element = largest_element;
+    m_array_changed = true;
     return largest_element;
+}
+
+bool *ArrayCB::position_changed(int *arr) {
+    bool position_changed[m_size];
+
+    for (unsigned i = 0; i < m_size; i++) {
+        if (ptr[i] == arr[i])
+            position_changed[i] = false;
+        else
+            position_changed[i] = true;
+    }
 }
 

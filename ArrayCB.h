@@ -35,6 +35,8 @@ public:
 
     int largest_element();
 
+    bool* position_changed(int *arr);
+
     void print() const;
 
 private:
@@ -47,6 +49,7 @@ private:
     int access_count = 0;
     int swap_count = 0;
 
+    int last_largest_element;
 
 
 };

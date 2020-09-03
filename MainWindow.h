@@ -41,6 +41,8 @@ private:
     QCheckBox *antialiasingCheckBox;
     QCheckBox *transformationsCheckBox;
 
+    ArrayCB *m_array;
+
 };
 
 
