@@ -16,32 +16,32 @@ Q_OBJECT
 public:
     MainWindow();
 
-    ArrayCB& array();
+
 
 private slots:
-    void shapeChanged();
-    void penChanged();
-    void brushChanged();
+    void sort();
+    void randomise();
+
+    void delayChanged(const QString &text);
+    void arrayElementsChanged(const QString &text);
+
+    void sortingAlgChanged(int index);
 
 private:
     RenderArea *renderArea;
-    QLabel *shapeLabel;
-    QLabel *penWidthLabel;
-    QLabel *penStyleLabel;
-    QLabel *penCapLabel;
-    QLabel *penJoinLabel;
-    QLabel *brushStyleLabel;
-    QLabel *otherOptionsLabel;
-    QComboBox *shapeComboBox;
-    QSpinBox *penWidthSpinBox;
-    QComboBox *penStyleComboBox;
-    QComboBox *penCapComboBox;
-    QComboBox *penJoinComboBox;
-    QComboBox *brushStyleComboBox;
-    QCheckBox *antialiasingCheckBox;
-    QCheckBox *transformationsCheckBox;
 
-    ArrayCB *m_array;
+    QPushButton *sortButton;
+    QPushButton *randomiseButton;
+
+    QLabel *delayLabel;
+    QLineEdit *delayLineEdit;
+
+    QLabel *sortingAlgLabel;
+    QComboBox *sortingAlgComboBox;
+
+    QLabel *arrayElementsLabel;
+    QLineEdit *arrayElementsLineEdit;
+
 
 };
 

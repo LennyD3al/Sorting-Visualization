@@ -9,31 +9,39 @@
 #include <QtWidgets>
 #include <chrono>
 #include <thread>
+#include <stdlib.h>
 
 #include "ArrayCB.h"
+#include "BubbleSort.h"
 
 class RenderArea: public QWidget {
 Q_OBJECT
 
 
 public:
-    enum Shape { Line, Points, Polyline, Polygon, Rect, RoundedRect, Ellipse, Arc,
-        Chord, Pie, Path, Text, Pixmap };
+
+    enum SortingAlgorithm {
+        BubbleSort,
+        QuickSort,
+    };
 
     RenderArea(QWidget *parent = 0);
 
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
 
-    void setArray(ArrayCB *arr);
+    void setArray(int *arr, int s);
 
 
 public slots:
-    void setShape(Shape shape);
-    void setPen(const QPen &pen);
-    void setBrush(const QBrush &brush);
-    void setAntialiased(bool antialiased);
-    void setTransformed(bool transformed);
+
+    void startSort();
+    void randomiseArray();
+
+    void setDelay(const int &delay);
+    void setArrayElements(const int &elements);
+
+    void setSortingAlgorithm(const SortingAlgorithm &alg);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -41,25 +49,34 @@ protected:
     void showEvent(QShowEvent *event) override;
 
 private:
-    Shape shape;
+
     QPen pen;
     QBrush brush;
     bool antialiased;
     bool transformed;
     QPixmap pixmap;
 
+    SortingAlgorithm sortingAlgorithm;
+    int m_delay;
+
     QVector<QRectF> rects;
 
-    ArrayCB *m_array;
+    std::unique_ptr<ArrayCB> m_array;
+    ArrayCB last_drawn;
+
+    std::thread *sortingThread;
+    std::atomic<bool> sorting;
 
 private:
     void accessCB();
     void swapCB();
 
-    static void sleep();
+    void sleep();
 
     void addRect(const QRectF &rect);
+    void addRect(const QRectF &rect, const int &i);
     void removeRect(const QRectF &rect);
+    void removeRect(const int &index);
     void removeAllRects();
 
     static float scale(const float &val, const float &out_max, const float &in_max);

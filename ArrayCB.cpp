@@ -31,12 +31,21 @@ ArrayCB::ArrayCB(int * p, int s) {
     }
 }
 
+ArrayCB::ArrayCB(ArrayCB &arr) {
+    m_size = arr.size();
+    ptr = new int[m_size];
+    for (int i = 0; i < m_size; i++) {
+        ptr[i] = arr[i];
+    }
+}
+
+
 void ArrayCB::print() const {
     for (int i = 0; i < m_size; i++) {
-        // std::cout << ptr[i] << " ";
+        std::cout << ptr[i] << " ";
     }
 
-    // std::cout << std::endl;
+    std::cout << std::endl;
 }
 
 void ArrayCB::add_array_accessed_cb(ArrayCB::f_void_t cb) {
@@ -89,14 +98,17 @@ int ArrayCB::largest_element() {
     return largest_element;
 }
 
-bool *ArrayCB::position_changed(int *arr) {
-    bool position_changed[m_size];
+std::vector<bool> ArrayCB::position_changed(ArrayCB arr) {
+    std::vector<bool> pos_changed;
 
-    for (unsigned i = 0; i < m_size; i++) {
+    for (int i = 0; i < m_size; i++) {
         if (ptr[i] == arr[i])
-            position_changed[i] = false;
+            pos_changed.push_back(false);
         else
-            position_changed[i] = true;
+            pos_changed.push_back(true);
     }
+
+    return pos_changed;
 }
+
 

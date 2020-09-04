@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <algorithm>
 #include <functional>
+#include <iostream>
 
 class ArrayCB {
 
@@ -17,6 +18,7 @@ class ArrayCB {
 public:
 
     explicit ArrayCB(int* p = nullptr, int s = 0);
+    ArrayCB (ArrayCB &arr);
 
     int& operator[] (int);
 
@@ -35,7 +37,7 @@ public:
 
     int largest_element();
 
-    bool* position_changed(int *arr);
+    std::vector<bool> position_changed(ArrayCB arr);
 
     void print() const;
 
@@ -50,7 +52,7 @@ private:
     int swap_count = 0;
 
     int last_largest_element;
-
+    bool m_array_changed;
 
 };
 
