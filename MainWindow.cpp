@@ -6,6 +6,8 @@
 
 #include "MainWindow.h"
 
+#include <thread>
+
 #include <QCoreApplication>
 #include <QPushButton>
 
@@ -14,10 +16,12 @@ const int IdRole = Qt::UserRole;
 
 
 MainWindow::MainWindow() {
+
     renderArea = new RenderArea;
 
     sortingAlgComboBox = new QComboBox();
     sortingAlgComboBox->addItem(tr("BubbleSort"), RenderArea::SortingAlgorithm::BubbleSort);
+    sortingAlgComboBox->addItem(tr("InsertionSort"), RenderArea::SortingAlgorithm::InsertionSort);
     sortingAlgComboBox->addItem(tr("QuickSort"), RenderArea::SortingAlgorithm::QuickSort );
 
     sortingAlgLabel = new QLabel(tr("&Sorting Algorithm: "));
@@ -34,8 +38,10 @@ MainWindow::MainWindow() {
 
     randomiseButton = new QPushButton(tr("Randomise"));
 
+    resetButton = new QPushButton(tr("Reset"));
+
     arrayElementsLineEdit = new QLineEdit;
-    arrayElementsLineEdit->setValidator(new QIntValidator(0, 200, this));
+    arrayElementsLineEdit->setValidator(new QIntValidator(0, 1000, this));
     arrayElementsLineEdit->setText(tr("10"));
 
     arrayElementsLabel = new QLabel(tr("&Array Elements: "));
@@ -43,6 +49,7 @@ MainWindow::MainWindow() {
 
     connect(sortButton, SIGNAL(released()), this, SLOT(sort()));
     connect(randomiseButton, SIGNAL(released()), this, SLOT(randomise()));
+    connect(resetButton, SIGNAL(released()), this, SLOT(reset()));
 
     connect(delayLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(delayChanged(const QString &)));
     connect(arrayElementsLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(arrayElementsChanged(const QString &)));
@@ -54,9 +61,17 @@ MainWindow::MainWindow() {
     mainLayout->setColumnStretch(3, 1);
     mainLayout->addWidget(renderArea, 0, 0, 1, 4);
 
-    mainLayout->addWidget(sortButton, 2, 0, Qt::AlignRight);
+    QHBoxLayout *buttonLayout = new QHBoxLayout;
+
+    buttonLayout->addWidget(sortButton);
+    buttonLayout->addWidget(resetButton);
+    buttonLayout->addWidget(randomiseButton);
+
+    mainLayout->addLayout(buttonLayout, 2, 0, 1, 2);
+
     mainLayout->addWidget(randomiseButton, 2, 1, Qt::AlignRight);
-    mainLayout->addWidget(sortingAlgLabel, 2, 2, Qt::AlignRight);
+
+    mainLayout->addWidget(sortingAlgLabel, 2, 2 , Qt::AlignRight);
     mainLayout->addWidget(sortingAlgComboBox, 2, 3);
 
     mainLayout->addWidget(delayLabel, 3, 0, Qt::AlignRight);
@@ -73,11 +88,7 @@ MainWindow::MainWindow() {
 
 
     setWindowTitle(tr("Basic Drawing"));
-
-
 }
-
-
 
 void MainWindow::sort() {
     printf("Sort\n");
@@ -102,4 +113,9 @@ void MainWindow::sortingAlgChanged(int index) {
     printf("Sorting Alg: %d\n", index);
     RenderArea::SortingAlgorithm alg = RenderArea::SortingAlgorithm(sortingAlgComboBox->itemData(sortingAlgComboBox->currentIndex(), IdRole).toInt());
     renderArea->setSortingAlgorithm(alg);
+}
+
+void MainWindow::reset() {
+    printf("Reset\n");
+    renderArea->reset();
 }

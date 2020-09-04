@@ -9,10 +9,13 @@
 #include <QtWidgets>
 #include <chrono>
 #include <thread>
-#include <stdlib.h>
+#include <cstdlib>
+
+#include <boost/thread.hpp>
 
 #include "ArrayCB.h"
 #include "BubbleSort.h"
+#include "InsertionSort.h"
 
 class RenderArea: public QWidget {
 Q_OBJECT
@@ -22,6 +25,7 @@ public:
 
     enum SortingAlgorithm {
         BubbleSort,
+        InsertionSort,
         QuickSort,
     };
 
@@ -37,6 +41,7 @@ public slots:
 
     void startSort();
     void randomiseArray();
+    void reset();
 
     void setDelay(const int &delay);
     void setArrayElements(const int &elements);
@@ -64,7 +69,7 @@ private:
     std::unique_ptr<ArrayCB> m_array;
     ArrayCB last_drawn;
 
-    std::thread *sortingThread;
+    boost::thread *sortingThread;
     std::atomic<bool> sorting;
 
 private:
@@ -81,7 +86,7 @@ private:
 
     static float scale(const float &val, const float &out_max, const float &in_max);
 
-    void updateLines();
+    void updateRects();
 };
 
 #endif //SORTING_VIS_RENDERAREA_H

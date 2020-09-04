@@ -16,11 +16,10 @@ Q_OBJECT
 public:
     MainWindow();
 
-
-
 private slots:
     void sort();
     void randomise();
+    void reset();
 
     void delayChanged(const QString &text);
     void arrayElementsChanged(const QString &text);
@@ -32,6 +31,7 @@ private:
 
     QPushButton *sortButton;
     QPushButton *randomiseButton;
+    QPushButton *resetButton;
 
     QLabel *delayLabel;
     QLineEdit *delayLineEdit;

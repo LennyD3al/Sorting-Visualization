@@ -8,6 +8,8 @@
 
 #include <functional>
 #include <iostream>
+#include <boost/chrono.hpp>
+
 
 RenderArea::RenderArea(QWidget *parent)
         : QWidget(parent) {
@@ -76,27 +78,24 @@ void RenderArea::setArray(int *arr, int s) {
     m_array->add_array_accessed_cb([this] { accessCB(); });
     m_array->add_array_swapped_cb([this] { swapCB(); });
     m_array->add_array_swapped_cb([this] { sleep(); });
-    updateLines();
+    updateRects();
     update();
 }
 
 void RenderArea::accessCB() {
-    // printf("Access CB\n");
-    // updateLines();
-    update();
+
+    // update();
 }
 
 void RenderArea::swapCB() {
-
-
-    updateLines();
+    updateRects();
     update();
 }
 
 void RenderArea::resizeEvent(QResizeEvent *event) {
     QWidget::resizeEvent(event);
     removeAllRects();
-    updateLines();
+    updateRects();
 }
 
 void RenderArea::showEvent(QShowEvent *event) {
@@ -105,22 +104,22 @@ void RenderArea::showEvent(QShowEvent *event) {
 
 }
 
-void RenderArea::updateLines() {
+void RenderArea::updateRects() {
 
 
     int arraySize = m_array->size();
 
     // Calculate width
-    float recWidth = width() / arraySize;
+    float recWidth = (float)width() / (float)arraySize;
 
     if (rects.isEmpty() && m_array != nullptr) {
         // No Rects
 
         for (int i = 0; i < arraySize; i++) {
 
-            float recHeight = scale((*m_array)[i], height(), m_array->largest_element());
+            float recHeight = scale((float)(*m_array)[i], (float)height(), (float)m_array->largest_element());
 
-            float xPos = i * recWidth;
+            float xPos = (float)i * recWidth;
 
             QRectF rect(xPos, height(), recWidth, -recHeight);
 
@@ -160,28 +159,44 @@ float RenderArea::scale(const float &val, const float &out_max, const float &in_
 }
 
 void RenderArea::sleep() {
-    std::this_thread::sleep_for(std::chrono::milliseconds(m_delay));
+    try {
+        boost::this_thread::sleep_for(boost::chrono::milliseconds(m_delay));
+    } catch (boost::thread_interrupted&) {
+        sorting = false;
+        throw ;
+    }
 }
 
 void RenderArea::startSort() {
-    sortingThread = new std::thread([this] {
+    sortingThread = new boost::thread([this] {
         this->sorting = true;
-        BubbleSort::sort(*(this->m_array), this->m_array->size());
+        switch(this->sortingAlgorithm) {
+            case BubbleSort:
+                BubbleSort::sort(*(this->m_array), this->m_array->size());
+                break;
+            case InsertionSort:
+                InsertionSort::sort(*(this->m_array), this->m_array->size());
+                break;
+            case QuickSort:
+                break;
+        }
+
         this->sorting = false;
     });
 }
 
 void RenderArea::randomiseArray() {
+
     if (!sorting) {
         for (int i = 0; i < m_array->size(); i++) {
             (*m_array)[i] = rand() % 1000;
         }
-        updateLines();
+        updateRects();
     }
 }
 
 void RenderArea::setSortingAlgorithm(const RenderArea::SortingAlgorithm &alg) {
-
+    sortingAlgorithm = alg;
 }
 
 void RenderArea::setDelay(const int &delay) {
@@ -194,9 +209,17 @@ void RenderArea::setArrayElements(const int &elements) {
         for (int i = 0; i < elements; i++) {
             arr[i] = rand() % 1000;
         }
+
+        removeAllRects();
+
         setArray(arr, elements);
         delete[] arr;
     }
+}
+
+void RenderArea::reset() {
+    if (sortingThread != nullptr)
+        sortingThread->interrupt();
 }
 
 
