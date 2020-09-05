@@ -17,7 +17,7 @@ find_package(Boost COMPONENTS thread system chrono REQUIRED)
 
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
-add_executable(Sorting_Vis main.cpp BubbleSort.h ArrayCB.cpp ArrayCB.h MainWindow.cpp MainWindow.h RenderArea.cpp RenderArea.h InsertionSort.h)
+add_executable(Sorting_Vis main.cpp "Sorting Algorithms /BubbleSort.h" util/ArrayCB.cpp util/ArrayCB.h Window/MainWindow.cpp Window/MainWindow.h Window/RenderArea.cpp Window/RenderArea.h "Sorting Algorithms /InsertionSort.h")
 
 target_link_libraries(Sorting_Vis Qt5::Widgets)
 TARGET_LINK_LIBRARIES( Sorting_Vis ${Boost_LIBRARIES} )

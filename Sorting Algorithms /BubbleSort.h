@@ -6,7 +6,7 @@
 #define SCHULE_BUBBLESORT_H
 
 #include<vector>
-#include "ArrayCB.h"
+#include "../util/ArrayCB.h"
 
 class BubbleSort {
 public:

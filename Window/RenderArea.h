@@ -13,9 +13,9 @@
 
 #include <boost/thread.hpp>
 
-#include "ArrayCB.h"
-#include "BubbleSort.h"
-#include "InsertionSort.h"
+#include "../util/ArrayCB.h"
+#include "../Sorting Algorithms /BubbleSort.h"
+#include "../Sorting Algorithms /InsertionSort.h"
 
 class RenderArea: public QWidget {
 Q_OBJECT

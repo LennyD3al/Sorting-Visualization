@@ -8,7 +8,7 @@
 
 #include <QtWidgets>
 #include "RenderArea.h"
-#include "BubbleSort.h"
+#include "../Sorting Algorithms /BubbleSort.h"
 
 class MainWindow: public QWidget {
 Q_OBJECT

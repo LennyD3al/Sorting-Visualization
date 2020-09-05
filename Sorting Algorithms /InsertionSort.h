@@ -5,7 +5,7 @@
 #ifndef SORTING_VIS_INSERTIONSORT_H
 #define SORTING_VIS_INSERTIONSORT_H
 
-#include "ArrayCB.h"
+#include "../util/ArrayCB.h"
 
 class InsertionSort {
 public:

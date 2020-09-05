@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdio>
 
-#include "MainWindow.h"
+#include "Window/MainWindow.h"
 #include <thread>
 
 
