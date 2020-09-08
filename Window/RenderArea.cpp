@@ -6,16 +6,11 @@
 
 #include "RenderArea.h"
 
-#include <functional>
-#include <iostream>
-#include <boost/chrono.hpp>
 
 
 RenderArea::RenderArea(QWidget *parent)
         : QWidget(parent) {
 
-    antialiased = false;
-    transformed = false;
     pixmap.load(":/images/qt-logo.png");
 
     setBackgroundRole(QPalette::Base);
@@ -78,16 +73,23 @@ void RenderArea::setArray(int *arr, int s) {
     m_array->add_array_accessed_cb([this] { accessCB(); });
     m_array->add_array_swapped_cb([this] { swapCB(); });
     m_array->add_array_swapped_cb([this] { sleep(); });
+    m_array->add_array_update_cb([this] { updateCB(); });
+    m_array->add_array_update_cb([this] { sleep(); });
     updateRects();
     update();
 }
 
 void RenderArea::accessCB() {
-
     // update();
 }
 
 void RenderArea::swapCB() {
+    updateRects();
+    update();
+}
+
+void RenderArea::updateCB() {
+    printf("update");
     updateRects();
     update();
 }
@@ -100,12 +102,9 @@ void RenderArea::resizeEvent(QResizeEvent *event) {
 
 void RenderArea::showEvent(QShowEvent *event) {
     QWidget::showEvent(event);
-
-
 }
 
 void RenderArea::updateRects() {
-
 
     int arraySize = m_array->size();
 
@@ -114,7 +113,6 @@ void RenderArea::updateRects() {
 
     if (rects.isEmpty() && m_array != nullptr) {
         // No Rects
-
         for (int i = 0; i < arraySize; i++) {
 
             float recHeight = scale((float)(*m_array)[i], (float)height(), (float)m_array->largest_element());
@@ -168,34 +166,20 @@ void RenderArea::sleep() {
 }
 
 void RenderArea::startSort() {
-    sortingThread = new boost::thread([this] {
-        this->sorting = true;
-        switch(this->sortingAlgorithm) {
-            case BubbleSort:
-                BubbleSort::sort(*(this->m_array), this->m_array->size());
-                break;
-            case InsertionSort:
-                InsertionSort::sort(*(this->m_array), this->m_array->size());
-                break;
-            case QuickSort:
-                break;
-        }
-
-        this->sorting = false;
-    });
-}
-
-void RenderArea::randomiseArray() {
-
     if (!sorting) {
-        for (int i = 0; i < m_array->size(); i++) {
-            (*m_array)[i] = rand() % 1000;
-        }
-        updateRects();
+        sortingThread = new boost::thread([this] {
+            this->sorting = true;
+            Sort::sort(*(this->m_array), this->sortingAlgorithm);
+            this->sorting = false;
+        });
     }
 }
 
-void RenderArea::setSortingAlgorithm(const RenderArea::SortingAlgorithm &alg) {
+void RenderArea::randomiseArray() {
+    setArrayElements(m_array->size());
+}
+
+void RenderArea::setSortingAlgorithm(const SortingAlgorithm &alg) {
     sortingAlgorithm = alg;
 }
 
@@ -221,7 +205,6 @@ void RenderArea::reset() {
     if (sortingThread != nullptr)
         sortingThread->interrupt();
 }
-
 
 
 

@@ -10,25 +10,21 @@
 #include <chrono>
 #include <thread>
 #include <cstdlib>
+#include <functional>
+#include <iostream>
+#include <boost/chrono.hpp>
+
 
 #include <boost/thread.hpp>
 
 #include "../util/ArrayCB.h"
-#include "../Sorting Algorithms /BubbleSort.h"
-#include "../Sorting Algorithms /InsertionSort.h"
+#include "../Sorting Algorithms/sort.h"
 
 class RenderArea: public QWidget {
 Q_OBJECT
 
 
 public:
-
-    enum SortingAlgorithm {
-        BubbleSort,
-        InsertionSort,
-        QuickSort,
-    };
-
     RenderArea(QWidget *parent = 0);
 
     QSize minimumSizeHint() const override;
@@ -55,10 +51,6 @@ protected:
 
 private:
 
-    QPen pen;
-    QBrush brush;
-    bool antialiased;
-    bool transformed;
     QPixmap pixmap;
 
     SortingAlgorithm sortingAlgorithm;
@@ -75,6 +67,7 @@ private:
 private:
     void accessCB();
     void swapCB();
+    void updateCB();
 
     void sleep();
 

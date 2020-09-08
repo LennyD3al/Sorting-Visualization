@@ -6,10 +6,6 @@
 
 #include "MainWindow.h"
 
-#include <thread>
-
-#include <QCoreApplication>
-#include <QPushButton>
 
 const int IdRole = Qt::UserRole;
 
@@ -20,9 +16,9 @@ MainWindow::MainWindow() {
     renderArea = new RenderArea;
 
     sortingAlgComboBox = new QComboBox();
-    sortingAlgComboBox->addItem(tr("BubbleSort"), RenderArea::SortingAlgorithm::BubbleSort);
-    sortingAlgComboBox->addItem(tr("InsertionSort"), RenderArea::SortingAlgorithm::InsertionSort);
-    sortingAlgComboBox->addItem(tr("QuickSort"), RenderArea::SortingAlgorithm::QuickSort );
+    sortingAlgComboBox->addItem(tr("BubbleSort"), SortingAlgorithm::BubbleSort);
+    sortingAlgComboBox->addItem(tr("InsertionSort"), SortingAlgorithm::InsertionSort);
+    sortingAlgComboBox->addItem(tr("QuickSort"), SortingAlgorithm::QuickSort );
 
     sortingAlgLabel = new QLabel(tr("&Sorting Algorithm: "));
     sortingAlgLabel->setBuddy(sortingAlgComboBox);
@@ -85,6 +81,7 @@ MainWindow::MainWindow() {
 
     delayChanged(delayLineEdit->text());
     arrayElementsChanged(arrayElementsLineEdit->text());
+    sortingAlgChanged(sortingAlgComboBox->currentIndex());
 
 
     setWindowTitle(tr("Basic Drawing"));
@@ -100,22 +97,18 @@ void MainWindow::randomise() {
 }
 
 void MainWindow::delayChanged(const QString &text) {
-    printf("Delay: %d\n", text.toInt());
     renderArea->setDelay(text.toInt());
 }
 
 void MainWindow::arrayElementsChanged(const QString &text) {
-    printf("Array Elements: %d\n", text.toInt());
     renderArea->setArrayElements(text.toInt());
 }
 
 void MainWindow::sortingAlgChanged(int index) {
-    printf("Sorting Alg: %d\n", index);
-    RenderArea::SortingAlgorithm alg = RenderArea::SortingAlgorithm(sortingAlgComboBox->itemData(sortingAlgComboBox->currentIndex(), IdRole).toInt());
+    SortingAlgorithm alg = SortingAlgorithm(sortingAlgComboBox->itemData(sortingAlgComboBox->currentIndex(), IdRole).toInt());
     renderArea->setSortingAlgorithm(alg);
 }
 
 void MainWindow::reset() {
-    printf("Reset\n");
     renderArea->reset();
 }

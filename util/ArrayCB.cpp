@@ -48,13 +48,19 @@ void ArrayCB::print() const {
     std::cout << std::endl;
 }
 
-void ArrayCB::add_array_accessed_cb(ArrayCB::f_void_t cb) {
+void ArrayCB::add_array_accessed_cb(const ArrayCB::f_void_t& cb) {
     array_accessed_cb.push_back(cb);
 }
 
-void ArrayCB::add_array_swapped_cb(ArrayCB::f_void_t cb) {
+void ArrayCB::add_array_swapped_cb(const ArrayCB::f_void_t& cb) {
     array_swapped_cb.push_back(cb);
 }
+
+void ArrayCB::add_array_update_cb(const ArrayCB::f_void_t& cb) {
+    array_update_cb.push_back(cb);
+}
+
+//TODO: Remove Callbakcs
 
 void ArrayCB::remove_array_accessed_cb(ArrayCB::f_void_t cb) {
     // array_accessed_cb.erase(std::remove(array_accessed_cb.begin(), array_accessed_cb.end(), cb), array_accessed_cb.end());
@@ -64,6 +70,11 @@ void ArrayCB::remove_array_swapped_cb(ArrayCB::f_void_t cb) {
     // array_swapped_cb.erase(std::remove(array_swapped_cb.begin(), array_swapped_cb.end(), cb), array_swapped_cb.end());
 
 }
+
+void ArrayCB::remove_array_update_cb(ArrayCB::f_void_t cb) {
+
+}
+
 
 void ArrayCB::swap(const int &index1, const int &index2) {
 
@@ -110,5 +121,12 @@ std::vector<bool> ArrayCB::position_changed(ArrayCB arr) {
 
     return pos_changed;
 }
+
+void ArrayCB::update() {
+    for (const f_void_t &cb: array_update_cb) {
+        cb();
+    }
+}
+
 
 

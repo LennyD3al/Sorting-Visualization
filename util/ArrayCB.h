@@ -24,11 +24,13 @@ public:
 
     int size() const;
 
-    void add_array_accessed_cb(f_void_t cb);
-    void add_array_swapped_cb(f_void_t cb);
+    void add_array_accessed_cb(const f_void_t& cb);
+    void add_array_swapped_cb(const f_void_t& cb);
+    void add_array_update_cb(const f_void_t& cb);
 
     void remove_array_accessed_cb(f_void_t cb);
     void remove_array_swapped_cb(f_void_t cb);
+    void remove_array_update_cb(f_void_t cb);
 
     void swap(const int& index1, const int& index2);
 
@@ -41,12 +43,15 @@ public:
 
     void print() const;
 
+    void update();
+
 private:
     int* ptr;
     int m_size;
 
     std::vector<f_void_t> array_accessed_cb;
     std::vector<f_void_t> array_swapped_cb;
+    std::vector<f_void_t> array_update_cb;
 
     int access_count = 0;
     int swap_count = 0;

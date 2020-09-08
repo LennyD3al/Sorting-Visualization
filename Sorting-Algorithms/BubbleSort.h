@@ -9,7 +9,9 @@
 #include "../util/ArrayCB.h"
 
 class BubbleSort {
-public:
+private:
+    friend class Sort;
+
     static void sort(ArrayCB &arr, int n) {
         int i, j;
         for (i = 0; i < n -1; i++) {

@@ -1,9 +1,4 @@
-#include <iostream>
-#include <cstdio>
-
 #include "Window/MainWindow.h"
-#include <thread>
-
 
 int main(int argc, char **argv) {
     QApplication app(argc, argv);

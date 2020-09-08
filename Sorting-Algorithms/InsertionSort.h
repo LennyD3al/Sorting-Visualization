@@ -8,7 +8,9 @@
 #include "../util/ArrayCB.h"
 
 class InsertionSort {
-public:
+private:
+    friend class Sort;
+
     static void sort(ArrayCB &A, int n) {
         for (int i = 1; i < n; i++) {
             for (int j = i; j > 0 && A[j] < A[j - 1]; j--) {
