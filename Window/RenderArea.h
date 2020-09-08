@@ -18,7 +18,7 @@
 #include <boost/thread.hpp>
 
 #include "../util/ArrayCB.h"
-#include "../Sorting Algorithms/sort.h"
+#include "../Sorting-Algorithms/sort.h"
 
 class RenderArea: public QWidget {
 Q_OBJECT

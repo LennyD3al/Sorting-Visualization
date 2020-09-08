@@ -7,6 +7,7 @@
 
 #include "BubbleSort.h"
 #include "InsertionSort.h"
+#include "Quicksort.h"
 
 enum SortingAlgorithm {
     BubbleSort,
@@ -24,6 +25,8 @@ public:
             case InsertionSort:
                 InsertionSort::sort(arr, arr.size());
                 break;
+            case QuickSort:
+                QuickSort::sort(arr, arr.size());
         }
 
     }
